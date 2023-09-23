@@ -5,14 +5,18 @@
             <div class="alert alert-success" role="alert">
                 <Icon icon="material-symbols:check" />
                 Availability added successfully !
-            </div>
-            
+            </div>          
+        </div>
+
+        <div v-if="deleteSuccess" class="mt-3 alert alert-success"  >
+            <Icon icon="material-symbols:check" />
+            Availability deleted successfully !
         </div>
       </div>
 
         <h2 class="firstText">
             <Icon icon="fluent-emoji:saluting-face" />
-            Welcome back ! here are your availabilities.
+            Welcome back Abdelaziz ! here are your availabilities.
 
             <RouterLink to="/addAvailability">
                 <button type="button" class="btn btn-success buttonDelete"  >
@@ -47,6 +51,7 @@ export default {
     data() {
         return {
             availabilities: [], 
+            deleteSuccess: false,
         };
     },
     mounted() {
@@ -74,13 +79,7 @@ export default {
                 return dateA - dateB;
             });
         },
- 
-
- 
-        openDeleteConfirmation(availability) {
-            this.availabilityToDelete = availability;
-            $('#deleteConfirmationModal').modal('show');
-        },
+  
 
         deleteAvailabilityConfirmed(availability) {
             const availabilityId = availability.id;
@@ -96,6 +95,7 @@ export default {
                             this.availabilities.splice(index, 1);
                         }
                         this.showDeleteConfirmation = false;  
+                        this.deleteSuccess = true;
                     } else {
                         console.error('Failed to delete availability. Status:', response.status);
                     }

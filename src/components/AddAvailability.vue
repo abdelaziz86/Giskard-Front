@@ -1,16 +1,16 @@
 <template>
     <div class="container mt-5">
-        <h2 class="createText"> 
+        <h2 class="createText">
             <Icon icon="mdi:create-new-folder-outline" />
-            Create Availability 
-                
+            Create Availability
+
             <RouterLink to="/" class="backButton">
-                <button type="button" class="btn btn-dark" style="float :right" >
-                    Back 
-                    <Icon style="" icon="mdi:arrow-left" /> 
+                <button type="button" class="btn btn-dark" style="float: right">
+                    Back
+                    <Icon style="" icon="mdi:arrow-left" />
                 </button>
             </RouterLink>
-        </h2> 
+        </h2>
         <form @submit.prevent="submitAvailability">
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>
@@ -31,6 +31,11 @@
         <div v-if="showDateValidationError" class="alert alert-danger mt-3">
             Start date must be before end date.
         </div>
+
+        <!-- Bootstrap alert for past date validation -->
+        <div v-if="showPastDateError" class="alert alert-danger mt-3">
+            Availability date cannot be in the past.
+        </div>
     </div>
 </template>
 
@@ -47,6 +52,7 @@ export default {
             startTime: "",
             endTime: "",
             showDateValidationError: false,
+            showPastDateError: false,
         };
     },
     methods: {
@@ -55,28 +61,34 @@ export default {
             const startDate = new Date(this.date);
             const start = new Date(`${this.date}T${this.startTime}:00`);
             const end = new Date(`${this.date}T${this.endTime}:00`);
+            const currentDate = new Date(); // Current date and time
 
             if (start < end) {
-                const availability = {
-                    start: start.toISOString(),
-                    end: end.toISOString(),
-                };
+                if (start >= currentDate) {
+                    const availability = {
+                        start: start.toISOString(),
+                        end: end.toISOString(),
+                    };
 
-                const response = await fetch("http://localhost:8189/availability", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(availability),
-                });
+                    const response = await fetch("http://localhost:8189/availability", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(availability),
+                    });
 
-                if (response.ok) {
-                    this.$router.push('/?success=true');
-                    // Handle success, e.g., show a success message
-                    console.log("Availability created successfully.");
+                    if (response.ok) {
+                        this.$router.push('/?success=true');
+                        // Handle success, e.g., show a success message
+                        console.log("Availability created successfully.");
+                    } else {
+                        // Handle error, e.g., show an error message
+                        console.error("Failed to create availability.");
+                    }
                 } else {
-                    // Handle error, e.g., show an error message
-                    console.error("Failed to create availability.");
+                    // Show past date validation error
+                    this.showPastDateError = true;
                 }
             } else {
                 // Show date validation error if start date is not before end date
@@ -85,22 +97,19 @@ export default {
         },
     },
 };
-
-
 </script>
 
 <style scoped>
 .createText {
     margin-bottom: 30px;
-    color : rgb(0, 134, 65) ;
-
+    color: rgb(0, 134, 65);
 }
 
 .backButton {
-    float : right;
-    text-decoration: none ;
-    color : white; 
-    font-weight: 800px; 
-    font-size: 16px; 
+    float: right;
+    text-decoration: none;
+    color: white;
+    font-weight: 800px;
+    font-size: 16px;
 }
 </style>

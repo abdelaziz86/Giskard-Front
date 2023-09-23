@@ -1,5 +1,10 @@
 <template>
     <div class="container mt-5">
+        <div v-if="success" class="mt-3 alert alert-success"  >
+            <Icon icon="material-symbols:check" />
+            Reservation deleted successfully
+        </div>
+
         <h1>Reservations</h1>
         <div v-if="reservations.length === 0" class="alert alert-info">
             No reservations available.
@@ -8,6 +13,7 @@
             <table class="table">
                 <thead>
                     <tr>
+                        <th scope="col">Day</th>
                         <th scope="col">Start Time</th>
                         <th scope="col">End Time</th>
                         <th scope="col">Title</th> 
@@ -17,6 +23,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="reservation in reservations" :key="reservation.id">
+                        <td>{{ extractDate(reservation.start) }}</td>
                         <td>{{ extractTime(reservation.start) }}</td>
                         <td>{{ extractTime(reservation.end) }}</td>
                         <td>{{ reservation.title }}</td> 
@@ -40,6 +47,7 @@ export default {
     data() {
         return {
             reservations: [],
+            success: false,
         };
     },
     async created() {
@@ -60,14 +68,21 @@ export default {
             const date = new Date(dateTimeString);
             return date.toLocaleTimeString();
         },
-
+        extractDate(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleDateString();
+        },
         addReservation(reservation) {
-            // Programmatically navigate to /addreservation and pass the availability object as a query parameter
+            // Programmatically navigate to /deleteReservation and pass the availability object as a query parameter
             this.$router.push({
                 path: '/deleteReservation',
-                query: { reservationId : reservation.id },
+                query: { reservationId: reservation.id },
             });
         },
+    },
+    mounted() {
+        // Accessing $route should be done inside a method or a lifecycle hook
+        this.success = this.$route.query.success ? true : false;
     },
     components: {
         Icon,
