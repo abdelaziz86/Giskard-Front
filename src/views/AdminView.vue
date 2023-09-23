@@ -1,7 +1,6 @@
 <template>
     <div class="container">
-        <div class="container">
-        <!-- ... Your existing content ... -->
+        <div class="container"> 
         <div v-if="success" class="msgSuccess"> 
             <div class="alert alert-success" role="alert">
                 <Icon icon="material-symbols:check" />
@@ -24,29 +23,9 @@
         </h2>
         <div class="row">
             <div class="col-md-4" v-for="availability in availabilities" :key="availability.id">
-                <div class="card cardItem">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <Icon icon="clarity:date-line" />
-                            Day: {{ extractDate(availability.start) }}
-                        
-                            <button type="button" class="btn btn-danger buttonDelete" @click="deleteAvailabilityConfirmed(availability)"  data-target="#deleteConfirmationModal">
-                                <Icon icon="bi:trash-fill" :horizontalFlip="true" />
-                            </button>
-                        </h5>
- 
 
-                        <p class="card-text" style="margin-top : 20px">
-                            <Icon icon="ri:time-line" />
-                            Start  {{ extractTime(availability.start) }}
-                        </p>
-
-                        <p class="card-text">
-                            <Icon icon="ri:time-fill" />
-                            End  {{ extractTime(availability.end) }}
-                        </p>
-                    </div>
-                </div>
+                <availability-card :availability="availability" @delete-availability="deleteAvailabilityConfirmed" />
+                 
             </div>
         </div>
     </div>
@@ -58,11 +37,13 @@
 
 
 <script>
-import { Icon } from '@iconify/vue'; 
+import { Icon } from '@iconify/vue';
+import AvailabilityCard from '../components/AvailabilityCard.vue'; 
+
 export default {
     props: {
-        success: Boolean, // Define the "success" prop
-    },
+        success: Boolean, 
+    }, 
     data() {
         return {
             availabilities: [], 
@@ -87,26 +68,13 @@ export default {
         },
 
         sortAvailabilities() {
-            this.availabilities.sort((a, b) => {
-                // Convert the start attributes to Date objects for comparison
+            this.availabilities.sort((a, b) => { 
                 const dateA = new Date(a.start);
-                const dateB = new Date(b.start);
-
-                // Compare the dates and return the result
+                const dateB = new Date(b.start); 
                 return dateA - dateB;
             });
         },
-
-        extractDate(dateTimeString) {
-            const date = new Date(dateTimeString);
-            return date.toLocaleDateString();  
-        },
-
-        
-        extractTime(dateTimeString) {
-            const date = new Date(dateTimeString);
-            return date.toLocaleTimeString(); 
-        },
+ 
 
  
         openDeleteConfirmation(availability) {
@@ -115,23 +83,19 @@ export default {
         },
 
         deleteAvailabilityConfirmed(availability) {
-            console.log("test");  
-            console.log("test2"); 
-            // Call the API to delete the availability by its ID
             const availabilityId = availability.id;
             fetch(`http://localhost:8189/availability/${availabilityId}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
-                    if (response.status === 204) {
-                        // Successful deletion, remove the availability from the list
+                    if (response.status === 204) { 
                         const index = this.availabilities.findIndex(
                             (availability) => availability.id === availabilityId
                         );
                         if (index !== -1) {
                             this.availabilities.splice(index, 1);
                         }
-                        this.showDeleteConfirmation = false; // Close the modal
+                        this.showDeleteConfirmation = false;  
                     } else {
                         console.error('Failed to delete availability. Status:', response.status);
                     }
@@ -146,6 +110,7 @@ export default {
     },
     components: {
         Icon,
+        AvailabilityCard
     },
 };
 </script>
@@ -162,15 +127,7 @@ export default {
     font-size : 15px;
     margin-bottom: 20px ; 
 }
-
-.cardItem{
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    margin-bottom: 20px;
-    background: linear-gradient(217deg, rgba(250, 255, 252, 0.8), rgba(255,0,0,0) 70.71%),
-            linear-gradient(127deg, rgba(255, 255, 255, 0.8), rgba(0,255,0,0) 70.71%),
-            linear-gradient(336deg, rgba(249, 255, 252, 0.8), rgba(0,0,255,0) 70.71%);
-}
-
+ 
 .msgSuccess {
     margin-top : 20px; 
     color: rgb(4, 190, 4);
