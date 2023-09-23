@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-5">
-        <h1 class="createText"> 
+        <h2 class="createText"> 
             <Icon icon="mdi:create-new-folder-outline" />
             Create Availability 
                 
@@ -10,7 +10,7 @@
                     <Icon style="" icon="mdi:arrow-left" /> 
                 </button>
             </RouterLink>
-        </h1> 
+        </h2> 
         <form @submit.prevent="submitAvailability">
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>
@@ -92,6 +92,8 @@ export default {
 <style scoped>
 .createText {
     margin-bottom: 30px;
+    color : rgb(0, 134, 65) ;
+
 }
 
 .backButton {
