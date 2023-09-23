@@ -8,6 +8,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: AdminView,
+      props: (route) => ({ success: route.query.success === "true" }),
     },
     {
       path: "/client",

@@ -1,21 +1,34 @@
 <template>
     <div class="container">
+        <div class="container">
+        <!-- ... Your existing content ... -->
+        <div v-if="success" class="msgSuccess"> 
+            <div class="alert alert-success" role="alert">
+                <Icon icon="material-symbols:check" />
+                Availability added successfully !
+            </div>
+            
+        </div>
+      </div>
+
         <h2 class="firstText">
             <Icon icon="fluent-emoji:saluting-face" />
             Welcome back ! here are your availabilities.
 
             <RouterLink to="/addAvailability">
-                <button type="button" class="btn btn-success buttonDelete" >
-                    Add <Icon icon="bi:plus-circle-fill" />
+                <button type="button" class="btn btn-success buttonDelete"  >
+                    Availability <Icon icon="bi:plus-circle-fill" />
                 </button>
             </RouterLink>
             
         </h2>
         <div class="row">
             <div class="col-md-4" v-for="availability in availabilities" :key="availability.id">
-                <div class="card">
+                <div class="card cardItem">
                     <div class="card-body">
-                        <h5 class="card-title">Day: {{ extractDate(availability.start) }}
+                        <h5 class="card-title">
+                            <Icon icon="clarity:date-line" />
+                            Day: {{ extractDate(availability.start) }}
                         
                         <button type="button" class="btn btn-danger buttonDelete" @click="deleteAvailabilityConfirmed(availability)"  data-target="#deleteConfirmationModal">
                             <Icon icon="bi:trash-fill" :horizontalFlip="true" />
@@ -23,40 +36,23 @@
 
 
                         </h5>
-                        <p class="card-text">Start Time: {{ extractTime(availability.start) }}</p>
-                        <p class="card-text">End Time: {{ extractTime(availability.end) }}</p>
+                        <p class="card-text" style="margin-top : 30px">
+                            <Icon icon="ri:time-line" />
+                            Start  {{ extractTime(availability.start) }}
+                        </p>
+
+                        <p class="card-text">
+                            <Icon icon="ri:time-fill" />
+                            End  {{ extractTime(availability.end) }}
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Confirm Deletion</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to delete this availability?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button type="button" class="btn btn-danger" @click="deleteAvailabilityConfirmed">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
+ 
       
-
-
-
-   
+ 
 
 </template>
 
@@ -64,6 +60,9 @@
 <script>
 import { Icon } from '@iconify/vue'; 
 export default {
+    props: {
+        success: Boolean, // Define the "success" prop
+    },
     data() {
         return {
             availabilities: [], 
@@ -71,6 +70,9 @@ export default {
     },
     mounted() {
         this.fetchAvailabilities();
+        this.$watch('availabilities', () => {
+            this.sortAvailabilities();
+        });
     },
     methods: {
         fetchAvailabilities() {
@@ -84,6 +86,16 @@ export default {
                 });
         },
 
+        sortAvailabilities() {
+            this.availabilities.sort((a, b) => {
+                // Convert the start attributes to Date objects for comparison
+                const dateA = new Date(a.start);
+                const dateB = new Date(b.start);
+
+                // Compare the dates and return the result
+                return dateA - dateB;
+            });
+        },
 
         extractDate(dateTimeString) {
             const date = new Date(dateTimeString);
@@ -142,11 +154,23 @@ export default {
 .firstText {
     margin-top: 30px;
     margin-bottom: 30px;
-    color : rgb(34, 158, 34) ;
+    color : rgb(27, 153, 211) ;
 }
 
 .buttonDelete {
     float : right ; 
-    font-size : 15px; 
+    font-size : 15px;
+    margin-bottom: 20px ; 
+}
+
+.cardItem{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 30px;
+}
+
+.msgSuccess {
+    margin-top : 20px; 
+    color: rgb(4, 190, 4);
+    font-size : 20px;
 }
 </style>
