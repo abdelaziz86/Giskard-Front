@@ -5,16 +5,21 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: AdminView
+      path: "/",
+      name: "home",
+      component: AdminView,
     },
     {
-      path: '/client',
-      name: 'client',
-      component: () => import('../views/ClientView.vue')
-    }
-  ]
-})
+      path: "/client",
+      name: "client",
+      component: () => import("../views/ClientView.vue"),
+    },
+    {
+      path: "/addAvailability",
+      name: "addAvailability",
+      component: () => import("../components/AddAvailability.vue"),
+    },
+  ],
+});
 
 export default router
