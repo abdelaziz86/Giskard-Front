@@ -5,9 +5,13 @@
                 <Icon icon="clarity:date-line" />
                 Day: {{ extractDate(availability.start) }}
 
-                <button v-if="admin" type="button" class="btn btn-danger buttonDelete" @click="deleteAvailabilityConfirmed"
-                    data-target="#deleteConfirmationModal">
+                <button v-if="admin" type="button" class="btn btn-danger buttonDelete" @click="deleteAvailabilityConfirmed">
                     <Icon icon="bi:trash-fill" :horizontalFlip="true" />
+                </button>
+
+                <!-- add reservation button -->
+                <button v-else type="button" class="btn btn-success buttonDelete" @click="addReservation">
+                    <Icon icon="carbon:choose-item" />
                 </button>
             </h5>
 
@@ -30,7 +34,7 @@ import { Icon } from '@iconify/vue';
 export default {
     props: {
         availability: Object, // Pass availability data as a prop
-        admin : Boolean,
+        admin: Boolean,
     },
     methods: {
         extractDate(dateTimeString) {
@@ -47,6 +51,14 @@ export default {
             // Emit an event to notify the parent component about the delete request
             this.$emit('delete-availability', this.availability);
         },
+
+        addReservation() {
+            // Programmatically navigate to /addreservation and pass the availability object as a query parameter
+            this.$router.push({
+                path: '/addReservation',
+                query: { availabilityId: this.availability.id },
+            });
+        },
     },
     components: {
         Icon,
@@ -61,5 +73,11 @@ export default {
     background: linear-gradient(217deg, rgba(250, 255, 252, 0.8), rgba(255, 0, 0, 0) 70.71%),
         linear-gradient(127deg, rgba(255, 255, 255, 0.8), rgba(0, 255, 0, 0) 70.71%),
         linear-gradient(336deg, rgba(249, 255, 252, 0.8), rgba(0, 0, 255, 0) 70.71%);
+}
+
+.buttonDelete {
+    float: right;
+    font-size: 15px;
+    margin-bottom: 20px;
 }
 </style>

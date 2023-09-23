@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-4" v-for="availability in availabilities" :key="availability.id">
 
-                <availability-card :availability="availability" @delete-availability="deleteAvailabilityConfirmed" />
+                <availability-card :admin="true" :availability="availability" @delete-availability="deleteAvailabilityConfirmed" />
                  
             </div>
         </div>
@@ -122,12 +122,7 @@ export default {
     color : rgb(0, 134, 65) ;
 }
 
-.buttonDelete {
-    float : right ; 
-    font-size : 15px;
-    margin-bottom: 20px ; 
-}
- 
+
 .msgSuccess {
     margin-top : 20px; 
     color: rgb(4, 190, 4);

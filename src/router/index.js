@@ -20,6 +20,21 @@ const router = createRouter({
       name: "addAvailability",
       component: () => import("../components/AddAvailability.vue"),
     },
+    {
+      path: "/addReservation",
+      name: "addReservation",
+      component: () => import("../views/AddReservation.vue"),
+    },
+    {
+      path: "/Reservations",
+      name: "reservations",
+      component: () => import("../views/Reservations.vue"),
+    },
+    {
+      path: "/deleteReservation",
+      name: "deleteReservation",
+      component: () => import("../views/deleteReservation.vue"),
+    },
   ],
 });
 
