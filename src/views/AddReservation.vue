@@ -23,29 +23,40 @@
         <form @submit.prevent="submitReservation">
             <div class="mb-3">
                 <label for="start" class="form-label">Start Time</label>
-                <input type="datetime-local" class="form-control" id="start" v-model="reservation.start"
+                <input type="datetime-local"  required="true" class="form-control" id="start" v-model="reservation.start"
                     :min="availability.start" :max="availability.end" />
             </div>
             <div class="mb-3">
                 <label for="end" class="form-label">End Time</label>
-                <input type="datetime-local" class="form-control" id="end" v-model="reservation.end"
+                <input type="datetime-local" required="true" class="form-control" id="end" v-model="reservation.end"
                     :min="availability.start" :max="availability.end" />
             </div>
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" v-model="reservation.title" />
+                <input type="text" required="true" class="form-control" id="title" v-model="reservation.title" />
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" v-model="reservation.email" />
+                <input type="email" required="true" class="form-control" id="email" v-model="reservation.email" />
             </div>
+            <!-- <div class="mb-3">
+                <label for="email" class="form-label">Note</label>
+                <textarea class="form-control" v-model="note"> </textarea>
+            </div> -->
             <button type="submit" class="btn btn-primary">Add Reservation</button>
+
+            
         </form>
+            <!-- <button @click="generateNote" class="btn btn-success" style="margin-right : 10px">Generate Note</button>
+
+        {{ generatedText }} -->
     </div>
 </template>
 
 <script>
 import { Icon } from '@iconify/vue';
+import axios from 'axios';
+
 
 export default {
     data() {
@@ -58,6 +69,8 @@ export default {
             },
             availability: null, // Initialize availability as null
             error: false,
+            generatedText: "",
+            note : ""
         };
     },
     async created() {
@@ -118,6 +131,34 @@ export default {
             }
         },
 
+
+        async generateNote() {
+
+            try {
+                const response = await axios.post(
+                    "https://api.openai.com/v1/engines/davinci-codex/completions",
+                    {
+                        prompt: this.note, // Use the note as the prompt
+                        max_tokens: 50, // Adjust as needed
+                    },
+                    {
+                        headers: {
+                            "Authorization": "Bearer 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", // Replace with your API key
+                            "Content-Type": "application/json",
+                        },
+                    }
+                );
+
+                if (response.data.choices.length > 0) {
+                    // Extract and store the generated text
+                    this.generatedText = response.data.choices[0].text;
+                }
+            } catch (error) {
+
+            }
+
+
+        },
 
         extractDate(dateTimeString) {
             const date = new Date(dateTimeString);
