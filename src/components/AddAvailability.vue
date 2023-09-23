@@ -1,9 +1,16 @@
 <template>
     <div class="container mt-5">
-        <h1>
-            <Icon icon="gridicons:create createText" />
-            Create Availability
-        </h1>
+        <h1 class="createText"> 
+            <Icon icon="mdi:create-new-folder-outline" />
+            Create Availability 
+                
+            <RouterLink to="/" class="backButton">
+                <button type="button" class="btn btn-dark" style="float :right" >
+                    Back 
+                    <Icon style="" icon="mdi:arrow-left" /> 
+                </button>
+            </RouterLink>
+        </h1> 
         <form @submit.prevent="submitAvailability">
             <div class="mb-3">
                 <label for="date" class="form-label">Date</label>
@@ -85,5 +92,13 @@ export default {
 <style scoped>
 .createText {
     margin-bottom: 30px;
+}
+
+.backButton {
+    float : right;
+    text-decoration: none ;
+    color : white; 
+    font-weight: 800px; 
+    font-size: 16px; 
 }
 </style>

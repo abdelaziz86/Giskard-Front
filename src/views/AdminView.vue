@@ -30,13 +30,13 @@
                             <Icon icon="clarity:date-line" />
                             Day: {{ extractDate(availability.start) }}
                         
-                        <button type="button" class="btn btn-danger buttonDelete" @click="deleteAvailabilityConfirmed(availability)"  data-target="#deleteConfirmationModal">
-                            <Icon icon="bi:trash-fill" :horizontalFlip="true" />
-                        </button>
-
-
+                            <button type="button" class="btn btn-danger buttonDelete" @click="deleteAvailabilityConfirmed(availability)"  data-target="#deleteConfirmationModal">
+                                <Icon icon="bi:trash-fill" :horizontalFlip="true" />
+                            </button>
                         </h5>
-                        <p class="card-text" style="margin-top : 30px">
+ 
+
+                        <p class="card-text" style="margin-top : 20px">
                             <Icon icon="ri:time-line" />
                             Start  {{ extractTime(availability.start) }}
                         </p>
@@ -152,9 +152,9 @@ export default {
 
 <style scoped>
 .firstText {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    color : rgb(27, 153, 211) ;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    color : rgb(0, 134, 65) ;
 }
 
 .buttonDelete {
@@ -165,7 +165,10 @@ export default {
 
 .cardItem{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    background: linear-gradient(217deg, rgba(250, 255, 252, 0.8), rgba(255,0,0,0) 70.71%),
+            linear-gradient(127deg, rgba(255, 255, 255, 0.8), rgba(0,255,0,0) 70.71%),
+            linear-gradient(336deg, rgba(249, 255, 252, 0.8), rgba(0,0,255,0) 70.71%);
 }
 
 .msgSuccess {
