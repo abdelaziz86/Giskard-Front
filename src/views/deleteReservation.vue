@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5">
+    <div class="container mt-5" style="height : 500px">
         <h1>Are you sure you want to delete this reservation?</h1>
 
         <!-- Display reservation details if available -->
@@ -18,7 +18,7 @@
             </p>
             <p>
                 <span style="font-weight: 800;">
-                    Title 
+                    Title : 
                 </span> {{ reservation.title }}
             </p> 
         </div>
@@ -83,7 +83,7 @@ export default {
                 );
 
                 if (response.ok) {
-                    this.$router.push('/reservations?success=true');
+                    this.$router.push('/reservations?success=true');    
                     this.message = "Reservation deleted successfully";
                     this.messageType = "alert-success";
                 } else if (response.status === 404) {

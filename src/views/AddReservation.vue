@@ -1,6 +1,14 @@
 <template>
     <div class="container mt-5">
-        <h1>Add Reservation</h1>
+        <h1>
+            Add Reservation
+            <RouterLink to="/client" class="backButton">
+                <button type="button" class="btn btn-dark" style="float: right">
+                    Back
+                    <Icon style="" icon="mdi:arrow-left" />
+                </button>
+            </RouterLink>
+        </h1>
         <p>
             <Icon icon="clarity:date-line" />
                     Available at {{ extractDate(availability.start) }}
@@ -120,10 +128,9 @@ export default {
                 });
 
                 if (response.ok) {
-                    // Handle success, e.g., show a success message
-                    console.log("Reservation added successfully.");
-                } else {
-                    // Handle error, e.g., show an error message
+                    this.$router.push('/reservations?successAdd=true');
+
+                } else { 
                     console.error("Failed to add reservation.");
                 }
             } catch (error) {

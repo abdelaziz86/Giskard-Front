@@ -5,6 +5,11 @@
             Reservation deleted successfully
         </div>
 
+        <div v-if="successAdd" class="mt-3 alert alert-success"  >
+                <Icon icon="material-symbols:check" />
+                Reservation added successfully
+            </div>
+
         <h1>Reservations</h1>
         <div v-if="reservations.length === 0" class="alert alert-info">
             No reservations available.
@@ -48,6 +53,7 @@ export default {
         return {
             reservations: [],
             success: false,
+            successAdd: false,
         };
     },
     async created() {
@@ -83,6 +89,7 @@ export default {
     mounted() {
         // Accessing $route should be done inside a method or a lifecycle hook
         this.success = this.$route.query.success ? true : false;
+        this.successAdd = this.$route.query.successAdd ? true : false;
     },
     components: {
         Icon,

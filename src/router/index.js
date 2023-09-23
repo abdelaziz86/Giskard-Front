@@ -18,7 +18,7 @@ const router = createRouter({
     {
       path: "/addAvailability",
       name: "addAvailability",
-      component: () => import("../components/AddAvailability.vue"),
+      component: () => import("../views/AddAvailability.vue"),
     },
     {
       path: "/addReservation",

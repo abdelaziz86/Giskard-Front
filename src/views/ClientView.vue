@@ -76,7 +76,7 @@ export default {
 
 <style scoped>
     .firstText {
-        margin-top: 20px;
+        margin-top: 40px;
         margin-bottom: 10px;
         color : rgb(255, 126, 6) ;
     }
