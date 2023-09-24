@@ -10,7 +10,15 @@
                 Reservation added successfully
             </div>
 
-        <h1>Reservations</h1>
+        <h1>
+            Reservations
+            <RouterLink to="/client" class="backButton">
+                <button type="button" class="btn btn-dark" style="float: right">
+                    Back
+                    <Icon style="" icon="mdi:arrow-left" />
+                </button>
+            </RouterLink>
+        </h1>
         <div v-if="reservations.length === 0" class="alert alert-info">
             No reservations available.
         </div>
