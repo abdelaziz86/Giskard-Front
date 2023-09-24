@@ -25,9 +25,7 @@
 
         <hr>
 
-        <div v-if="error" class="alert alert-danger">
-            Start time must be before end time.
-        </div>
+        
         <form @submit.prevent="submitReservation">
             <div class="mb-3">
                 <label for="start" class="form-label">Start Time</label>
@@ -47,23 +45,51 @@
                 <label for="email" class="form-label">Email</label>
                 <input type="email" required="true" class="form-control" id="email" v-model="reservation.email" />
             </div>
-            <!-- <div class="mb-3">
-                <label for="email" class="form-label">Note</label>
-                <textarea class="form-control" v-model="note"> </textarea>
-            </div> -->
-            <button type="submit" class="btn btn-primary">Add Reservation</button>
+            <hr style="margin-top: 50px; margin-bottom: 40px;">
+            <H4 >
+                <Icon icon="solar:star-bold-duotone" style="color : rgb(255, 200, 0) ; font-size: 30px ;" /> 
+                Add a special note 
+            </H4>
+            <div class="mb-3">
+                <label for="email" class="form-label">Tell us what do you want to write</label>
+                <textarea class="form-control" v-model="note" placeholder="Prompt text..."> </textarea>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">AI Generated Note</label>
+                <textarea class="form-control" v-model="generatedText" placeholder="Output..." style="height : 200px ; background-color: rgb(225, 225, 225)">
+                    {{ genratedText }}
+                </textarea>
+            </div>
 
+            <a @click="generateNote" class="btn btn-success" :class="{disabled : aiClicked}">Generate Note</a>
+            <button type="submit" class="btn btn-primary" style="margin-left : 10px" >Add Reservation</button>
+        
+            
             
         </form>
-            <!-- <button @click="generateNote" class="btn btn-success" style="margin-right : 10px">Generate Note</button>
 
-        {{ generatedText }} -->
+        
+
+        <br>
+        <br>
+        <div v-if="error" class="alert alert-danger">
+            Start time must be before end time.
+        </div>
+
+        <div v-if="aiMsg==1"  class="alert alert-danger">
+            Enter a prompt text to generate an output.
+        </div>
+        <div v-if="aiMsg == 2"  class="alert alert-success">
+            <Icon icon="material-symbols:check" />
+            Your output has been generated successfully.
+        </div>
+ 
     </div>
 </template>
 
 <script>
-import { Icon } from '@iconify/vue';
-import axios from 'axios';
+import { Icon } from '@iconify/vue'; 
+import axios from "axios";
 
 
 export default {
@@ -74,11 +100,14 @@ export default {
                 end: "",
                 title: "",
                 email: "",
+                note : ""
             },
             availability: null, // Initialize availability as null
             error: false,
             generatedText: "",
-            note : ""
+            note: "",
+            aiMsg: 0,
+            aiClicked : false
         };
     },
     async created() {
@@ -118,6 +147,8 @@ export default {
                 return;
             }
 
+            this.reservation.note = this.generatedText ;   
+
             try {
                 const response = await fetch("http://localhost:8189/reservations", {
                     method: "POST",
@@ -140,26 +171,39 @@ export default {
 
 
         async generateNote() {
-
-            try {
-                const response = await axios.post(
-                    "https://api.openai.com/v1/engines/davinci-codex/completions",
-                    {
-                        prompt: this.note, // Use the note as the prompt
-                        max_tokens: 50, // Adjust as needed
+            if (this.note == "") {
+                this.aiMsg = 1
+                return; 
+            }
+            this.aiClicked = true;
+            try { 
+                const options = {
+                    method: "POST",
+                    url: "https://api.edenai.run/v2/text/prompt_optimization",
+                    headers: {
+                        authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOGJlZDI0NTctOTI3OC00NmQ3LWE0OGMtZjMxMTVhMjZhNTliIiwidHlwZSI6ImFwaV90b2tlbiJ9.GmMLQhwNCFpHVQIXZpG7SC8wTj0U9HTllDsODUAmlII",
                     },
-                    {
-                        headers: {
-                            "Authorization": "Bearer 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", // Replace with your API key
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
+                    data: {
+                        show_original_response: false,
+                        fallback_providers: "",
+                        providers: "openai",
+                        text: this.note,
+                        target_provider: "openai",
+                    },
+                };
 
-                if (response.data.choices.length > 0) {
-                    // Extract and store the generated text
-                    this.generatedText = response.data.choices[0].text;
-                }
+                axios
+                    .request(options)
+                    .then((response) => {
+                        this.generatedText = response.data["openai"]["items"][0]["text"];
+                        console.log(response.data);
+                        this.aiMsg = 2
+                        this.aiClicked = false
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+
             } catch (error) {
 
             }
@@ -182,4 +226,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.disabled {
+  color: gray;              /* Change the text color */
+  pointer-events: none;     /* Disable click events */
+  text-decoration: none;    /* Remove underline */
+  cursor: not-allowed;      /* Change cursor to "not-allowed" */
+}
+</style>
