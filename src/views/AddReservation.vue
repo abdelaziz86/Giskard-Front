@@ -56,7 +56,7 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">AI Generated Note</label>
-                <textarea class="form-control" v-model="generatedText" placeholder="Output..." style="height : 200px ; background-color: rgb(225, 225, 225)">
+                <textarea class="form-control" v-model="generatedText" placeholder="Output..." style="height : 200px ; background-color: rgb(238, 237, 237)">
                     {{ genratedText }}
                 </textarea>
             </div>

@@ -26,9 +26,9 @@ import { RouterLink } from "vue-router";
 .header {
     // background: linear-gradient(to bottom, rgba(69, 103, 74, 0.9) 0%, rgba(138, 214, 151, 0.5) 100%);
 
-    background: linear-gradient(217deg, rgba(250, 255, 252, 0.8), rgba(255, 0, 0, 0) 70.71%),
-        linear-gradient(127deg, rgba(47, 245, 106, 0.8), rgba(0, 255, 0, 0) 90.71%),
-        linear-gradient(336deg, rgba(131, 255, 193, 0.8), rgba(0, 0, 255, 0) 90.71%);
+    background: linear-gradient(217deg, rgba(120, 228, 164, 0.8), rgba(255, 0, 0, 0) 70.71%),
+        linear-gradient(127deg, rgba(106, 255, 151, 0.8), rgba(0, 255, 0, 0) 90.71%),
+        linear-gradient(336deg, rgba(113, 252, 183, 0.8), rgba(0, 0, 255, 0) 90.71%);
         
     nav {
         display: flex;
