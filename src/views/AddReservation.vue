@@ -55,7 +55,13 @@
                 <textarea class="form-control" v-model="note" placeholder="Prompt text..."> </textarea>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">AI Generated Note</label>
+                <label for="email" class="form-label " style="margin-right : 10px">
+                    AI Generated Note
+                </label>
+                
+                
+
+
                 <textarea class="form-control" v-model="generatedText" placeholder="Output..." style="height : 200px ; background-color: rgb(238, 237, 237)">
                     {{ genratedText }}
                 </textarea>
@@ -63,7 +69,9 @@
 
             <a @click="generateNote" class="btn btn-success" :class="{disabled : aiClicked}">Generate Note</a>
             <button type="submit" class="btn btn-primary" style="margin-left : 10px" >Add Reservation</button>
-        
+            
+
+             
             
             
         </form>
@@ -82,6 +90,16 @@
         <div v-if="aiMsg == 2"  class="alert alert-success">
             <Icon icon="material-symbols:check" />
             Your output has been generated successfully.
+        </div>
+
+        <div v-if="aiClicked"  class="alert alert-warning">
+            
+            <div class="spinner-border" role="status"  >
+                <span class="sr-only" ></span>
+            </div>
+            <span style="margin-left : 10px ; margin-top: -10px !important; ">
+                Your output is being generated. Please wait...
+            </span>
         </div>
  
     </div>
@@ -175,6 +193,7 @@ export default {
                 this.aiMsg = 1
                 return; 
             }
+            this.aiMsg = 0; 
             this.aiClicked = true;
             try { 
                 const options = {
