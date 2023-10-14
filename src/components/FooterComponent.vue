@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer" style="margin-top : 60px ; "> 
+    <footer class="footer" style="margin-top : 160px ; "> 
              
             <div class="footer-text" style="margin-bottom: 18px;">
                 &copy; {{ currentYear }} Abdelaziz Makhlouf. All rights reserved.

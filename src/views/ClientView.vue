@@ -15,7 +15,7 @@
                 Hi again ! 
             </h2>
             <div style="margin-bottom: 30px;">
-                    Please book a reservation corresponding to a Abdelaziz's availability.
+                    Please book a reservation corresponding to Abdelaziz's availability.
             </div>
 
             

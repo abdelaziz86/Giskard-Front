@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-5" style="margin-bottom: 200px;">
+    <div class="container mt-5" style="margin-bottom: 400px;">
         <h2 class="createText">
             <Icon icon="mdi:create-new-folder-outline" />
             Create Availability
